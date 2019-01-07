@@ -1,0 +1,22 @@
+{
+  "Records": [
+    {
+      "EventVersion": "1.0",
+      "EventSubscriptionArn": "arn:aws:sns:eu-west-1:849122192484:mesos_slave_asg:7d71408e-0ab6-4bb4-a077-cf8632d9445e",
+      "EventSource": "aws:sns",
+      "Sns": {
+        "SignatureVersion": "1",
+        "Timestamp": "2016-07-14T14:57:14.694Z",
+        "Signature": "XedwLxAbpOr/fZ3EZxPogWgCQc6Jud8KOmIrHhVT9m+973CnpX7o68nu6Lx/+gDl+ziIJNywqjcJteHPrt5LwTVqHlk19ccUQJrQPkc/Q2wuFFdh0YbbXl6G2eDpik/X/R+8AumFM08KLyyFzg6RVwAArUKB3RZtee20P+xPJMX/8/3Y19gl5kB+Ysszy8bvy2wJkf+lwgrUAnG/T2iFtDh4pxefUsORoo/tW1lk448F+4um+yS2Z2SkTPt7yxYgSEzf/3JcwySl7qsd8IdcLSpWjsKwIcBI480MXZVVZiPUJEhrWl07G/4PggeAHIltQHzG8oB052FWrFxr8WN0Eg==",
+        "SigningCertUrl": "https://sns.eu-west-1.amazonaws.com/SimpleNotificationService-bb750dd426d95ee9390147a5624348ee.pem",
+        "MessageId": "27e48ebb-75f8-52cf-9048-debadf72d888",
+        "Message": "{\"Progress\":50,\"AccountId\":\"849122192484\",\"Description\":\"Terminating EC2 instance: i-033d664d4276e3241\",\"RequestId\":\"13926a43-a132-4866-80b7-c297a9676e28\",\"EndTime\":\"2016-07-14T14:57:14.647Z\",\"AutoScalingGroupARN\":\"arn:aws:autoscaling:eu-west-1:849122192484:autoScalingGroup:aca88fd2-26d9-4b2b-a64a-6c1cd0213d18:autoScalingGroupName/logging-mesos-slave\",\"ActivityId\":\"13926a43-a132-4866-80b7-c297a9676e28\",\"StartTime\":\"2016-07-14T14:56:32.087Z\",\"Service\":\"AWS Auto Scaling\",\"Time\":\"2016-07-14T14:57:14.647Z\",\"EC2InstanceId\":\"i-033d664d4276e3241\",\"StatusCode\":\"InProgress\",\"StatusMessage\":\"\",\"Details\":{\"Subnet ID\":\"subnet-d4b409b0\",\"Availability Zone\":\"eu-west-1a\"},\"AutoScalingGroupName\":\"logging-mesos-slave\",\"Cause\":\"At 2016-07-14T14:56:09Z a user request update of AutoScalingGroup constraints to min: 1, max: 1, desired: 1 changing the desired capacity from 2 to 1.  At 2016-07-14T14:56:32Z an instance was taken out of service in response to a difference between desired and actual capacity, shrinking the capacity from 2 to 1.  At 2016-07-14T14:56:32Z instance i-033d664d4276e3241 was selected for termination.\",\"Event\":\"autoscaling:EC2_INSTANCE_TERMINATE\"}",
+        "MessageAttributes": {},
+        "Type": "Notification",
+        "UnsubscribeUrl": "https://sns.eu-west-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:eu-west-1:849122192484:mesos_slave_asg:7d71408e-0ab6-4bb4-a077-cf8632d9445e",
+        "TopicArn": "arn:aws:sns:eu-west-1:849122192484:mesos_slave_asg",
+        "Subject": "Auto Scaling: termination for group \"logging-mesos-slave\""
+      }
+    }
+  ]
+}
