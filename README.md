@@ -1,3 +1,5 @@
+[![Build Status](https://cloud.drone.io/api/badges/meltwater/terraform-aws-asg-dns-handler/status.svg)](https://cloud.drone.io/meltwater/terraform-aws-asg-dns-handler)
+
 # ASG DNS handler
 
 (original version: https://github.com/meltwater/terraform-dns/tree/0.0.1/autoscale)
