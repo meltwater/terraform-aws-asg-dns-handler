@@ -1,0 +1,7 @@
+target
+.terraform/
+bin
+src
+pkg
+terraform.tfstate
+terraform.tfstate.backup
