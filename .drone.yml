@@ -10,6 +10,7 @@ steps:
     AWS_SECRET_ACCESS_KEY_ID:
       from_secret: aws_secret_access_key_id
   commands:
+  - apk add go build-base
   - cd terratest
   - export GOPATH=$(pwd)
   - export PATH=$PATH:$GOPATH/bin
