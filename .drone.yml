@@ -19,6 +19,11 @@ steps:
   - go get github.com/stretchr/testify/assert
   - cd test
   - go test -v -run TestAwsDnsRecordName
-  when:
-    event:
-    - pull_request
+
+trigger:
+  branch:
+    include:
+    - master
+  event:
+  - push
+  - pull_request
