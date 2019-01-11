@@ -1,6 +1,7 @@
 kind: pipeline
 name: example
 
+steps:
 - name: test
   image: meltwaterfoundation/drone-terrafy
   environment:
