@@ -23,7 +23,7 @@ func TestAwsDnsRecordName(t *testing.T) {
 
 	//Specify the path where Terraform code to be tested is loacated
 	terraformOptions := &terraform.Options{
-		TerraformDir: "../../examples/asg-dns-agent",
+		TerraformDir: "../../example/asg-dns-agent",
 	}
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
