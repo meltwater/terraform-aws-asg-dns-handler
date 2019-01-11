@@ -11,7 +11,7 @@ steps:
       from_secret: aws_secret_access_key_id
   commands:
   - apk add go build-base
-  - cd terratest/test
+  - cd terratest
   - terrapin -force -tf-version 0.11.8 -directory /usr/local/bin
   - export GOPATH=$(pwd)
   - export PATH=$PATH:$GOPATH/bin
