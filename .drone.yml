@@ -1,0 +1,33 @@
+kind: pipeline
+name: example
+
+steps:
+- name: test
+  image: meltwaterfoundation/drone-terrafy
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key_id
+  commands:
+  - apk add go build-base
+  - cd terratest
+  - terrapin -force -tf-version 0.11.8 -directory /usr/local/bin
+  - export GOPATH=$(pwd)
+  - export PATH=$PATH:$GOPATH/bin
+  - go get -u github.com/golang/dep/cmd/dep
+  - go get github.com/gruntwork-io/terratest/modules/aws
+  - go get github.com/gruntwork-io/terratest/modules/terraform
+  - go get github.com/stretchr/testify/assert
+  - cd test
+  - go test -v -run TestAwsDnsRecordName
+
+trigger:
+  branch:
+    include:
+    - master
+  event:
+  - push
+  - pull_request
+
+# comment
