@@ -8,7 +8,7 @@ steps:
     AWS_ACCESS_KEY_ID:
       from_secret: aws_access_key_id
     AWS_SECRET_ACCESS_KEY:
-      from_secret: aws_secret_access_key_id
+      from_secret: aws_secret_access_key
   commands:
   - apk add go build-base
   - cd terratest

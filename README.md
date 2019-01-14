@@ -27,7 +27,7 @@ tag {
 Once you have your ASG set up, you can just invoke this module and point it to it:
 ```hcl
 module "clever_name_autoscale_dns" {
-  source = "../../dns/autoscale"
+  source = "../../"
 
   autoscale_update_name = "clever_name"
   autoscale_group_names = "${aws_autoscaling_group.my_asg.name}"
@@ -55,7 +55,7 @@ The Lambda function then does the following:
 
 ## Setup
 
-Use `aws_autoscaling_notification` resource to hook up your ASG with this module, like so:
+Add `initial_lifecycle_hook` definitions to your `aws_autoscaling_group resource` , like so:
 
 ```hcl
 resource "aws_autoscaling_group" "my_asg" {
@@ -77,6 +77,24 @@ resource "aws_autoscaling_group" "my_asg" {
   lifecycle {
     create_before_destroy = true
   }
+  
+  initial_lifecycle_hook {
+    name = "lifecycle-launching"
+    default_result = "CONTINUE"
+    heartbeat_timeout = 60
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
+    notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
+    role_arn = "${module.autoscale_dns.agent_lifecycle_iam_role_arn}"
+  }
+
+  initial_lifecycle_hook {
+    name = "lifecycle-terminating"
+    default_result = "CONTINUE"
+    heartbeat_timeout = 60
+    lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
+    notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
+    role_arn = "${module.autoscale_dns.agent_lifecycle_iam_role_arn}"
+  }
 
   tag {
     key = "mw:hostname_pattern"
@@ -85,22 +103,8 @@ resource "aws_autoscaling_group" "my_asg" {
   }
 }
 
-
-resource "aws_autoscaling_notification" "autoscale_handling" {
-  group_names = [
-    "${aws_autoscaling_group.my_asg.name}"
-  ]
-  notifications  = [
-    "autoscaling:EC2_INSTANCE_LAUNCH",
-    "autoscaling:EC2_INSTANCE_TERMINATE",
-    "autoscaling:EC2_INSTANCE_LAUNCH_ERROR"
-  ]
-  topic_arn = "${var.autoscale_handling_sns_topic}"
-}
-
-
 module "autoscale_dns" {
-  source = "git::ssh://git@github.com/meltwater/terraform-modules-common.git?ref=<REPLACEME>//asg_dns_handler"
+  source = "../../"
 
   autoscale_update_name = "my_asg_handler"
 

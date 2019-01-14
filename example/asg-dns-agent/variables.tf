@@ -19,6 +19,3 @@ variable "ami_id" {
     description = "AMIs by region"
     default = "ami-f96c5280"
 }
-variable "availability_zones" {
-  default = "eu-west-1a,eu-west-1b,eu-west-1c"
-}
