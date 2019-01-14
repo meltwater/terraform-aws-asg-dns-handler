@@ -1,3 +1,10 @@
+## 1.0.0
+- BREAKING CHANGES/NOTES
+  - Fixed race condition described in [FOU-1834](https://jira.meltwater.com/browse/FOU-1834)
+    - Moved from `aws_autoscaling_notification` to [`initial_lifecycle_hook`](https://www.terraform.io/docs/providers/aws/r/autoscaling_group.html#initial_lifecycle_hook) for `autoscaling:EC2_INSTANCE_LAUNCHING` and `autoscaling:EC2_INSTANCE_TERMINATING` transitions which must be defined in your `aws_autoscaling_group` resource
+    - The move to lifecycle hooks requires changes be made to your `aws_autoscaling_group`, and you no longer need a `aws_autoscaling_notification` definition as in previous versions, see README
+    - Added `autoscale_iam_role_arn` and `agent_lifecycle_iam_role_arn` outputs
+
 ## 0.1.1
 - BUG FIXES
   - Solve bug where terraform always changes the filename attribute of the lambda function
