@@ -8,4 +8,3 @@ output "autoscale_iam_role_arn" {
 output "agent_lifecycle_iam_role_arn" {
   value = "${aws_iam_role.lifecycle.arn}"
 }
-
