@@ -2,8 +2,6 @@
 
 # ASG DNS handler
 
-(original version: https://github.com/meltwater/terraform-dns/tree/0.0.1/autoscale)
-
 ## Purpose
 This module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by Auto Scaling Groups
 
@@ -97,8 +95,8 @@ resource "aws_autoscaling_group" "my_asg" {
   }
 
   tag {
-    key = "mw:hostname_pattern"
-    value = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.${var.subaccount}.${var.rootaccount}.internal@${var.internal_zone_id}"
+    key = "asg:hostname_pattern"
+    value = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.testing@${var.internal_zone_id}"
     propagate_at_launch = true
   }
 }
