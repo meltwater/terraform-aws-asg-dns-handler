@@ -46,7 +46,6 @@ resource "aws_autoscaling_group" "test" {
         role_arn = "${module.autoscale_dns.agent_lifecycle_iam_role_arn}"
     }
 
-    //availability_zones = ["eu-west-1a"]
     name = "${aws_launch_configuration.test.id}"
     vpc_zone_identifier = ["${module.vpc.private_subnets}"]
 
@@ -64,7 +63,7 @@ resource "aws_autoscaling_group" "test" {
         propagate_at_launch = true
     }
     tag {
-        key = "mw:hostname_pattern"
+        key = "asg:hostname_pattern"
         value = "asg-test-#instanceid.asg-handler-vpc.testing@${aws_route53_zone.test.id}"
         propagate_at_launch = true
   }
