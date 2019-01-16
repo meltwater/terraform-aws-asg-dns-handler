@@ -42,7 +42,7 @@ The module sets up the following
 
 The Lambda function then does the following:
 
-- Fetch the `mw:hostname_pattern` tag value from the ASG, and parse out the hostname and Route53 zone ID from it.
+- Fetch the `asg:hostname_pattern` tag value from the ASG, and parse out the hostname and Route53 zone ID from it.
 - If it's a instance being created
 	- Fetch internal IP from EC2 API
 	- Create a Route53 record pointing the hostname to the IP
