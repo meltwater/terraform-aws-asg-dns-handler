@@ -10,8 +10,7 @@ autoscaling = boto3.client('autoscaling')
 ec2 = boto3.client('ec2')
 route53 = boto3.client('route53')
 
-HOSTNAME_TAG_NAME = "mw:hostname_pattern"
-# example: mesos-slave-#instanceid.main.dev.infra.internal@zone_id
+HOSTNAME_TAG_NAME = "asg:hostname_pattern"
 
 # Fetches private IP of an instance via EC2 API
 def fetch_private_ip_from_ec2(instance_id):

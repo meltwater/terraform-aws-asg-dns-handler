@@ -8,18 +8,18 @@
 This module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by Auto Scaling Groups
 
 ## Usage
-Create an ASG and set the `mw:hostname_pattern` tag for example like this:
+Create an ASG and set the `asg:hostname_pattern` tag for example like this:
 
 ```
-mesos-slave-#instanceid.main.dev.infra.internal@Z3QP9GZSRL8IVA
+asg-test-#instanceid.asg-handler-vpc.testing@Z3QP9GZSRL8IVA
 ```
 
 Could be interpolated in Terraform like this:
 
 ```hcl
 tag {
-  key = "mw:hostname_pattern"
-  value = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.${var.subaccount}.${var.rootaccount}.internal@${var.internal_zone_id}"
+  key = "asg:hostname_pattern"
+  value = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.testing@${var.internal_zone_id}"
   propagate_at_launch = true
 }
 ```
