@@ -102,7 +102,7 @@ resource "aws_autoscaling_group" "my_asg" {
 }
 
 module "autoscale_dns" {
-  source = "../../"
+  source = "github.com/terraform-aws-asg-dns-handler/terraform-aws-asg-dns-handler"
 
   autoscale_update_name = "my_asg_handler"
 
