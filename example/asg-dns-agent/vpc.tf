@@ -1,6 +1,7 @@
 provider "aws" {
-    region = "${var.aws_region}"
+  region = "${var.aws_region}"
 }
+
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
@@ -14,9 +15,9 @@ module "vpc" {
   enable_nat_gateway = true
   enable_vpn_gateway = true
 }
-resource "aws_route53_zone" "test" {
-    name = "asg-handler-vpc.testing"
-    vpc_id = "${module.vpc.vpc_id}"
-    force_destroy = true
 
+resource "aws_route53_zone" "test" {
+  name          = "asg-handler-vpc.testing"
+  vpc_id        = "${module.vpc.vpc_id}"
+  force_destroy = true
 }
