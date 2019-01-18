@@ -1,21 +1,21 @@
 variable "instance_type" {
-    default = "t2.medium"
+  default = "t2.medium"
 }
 
 variable "min_size" {
-    default = "1"
+  default = "1"
 }
 
 variable "max_size" {
-    default = "3"
+  default = "3"
 }
 
 variable "aws_region" {
   description = "Region for the VPC"
-  default = "eu-west-1"
+  default     = "eu-west-1"
 }
 
 variable "ami_id" {
-    description = "AMIs by region"
-    default = "ami-f96c5280"
+  description = "AMIs by region"
+  default     = "ami-f96c5280"
 }
