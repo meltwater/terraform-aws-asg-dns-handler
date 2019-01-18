@@ -1,11 +1,3 @@
-terraform {
-  backend "s3" {
-    bucket = "terraform-state-meltwater-foundation-demo1"
-    key    = "eu-west-1/asg-handler-testing/default.tfstate"
-    region = "eu-west-1"
-  }
-}
-
 module "autoscale_dns" {
   source                              = "../../"
   autoscale_handler_unique_identifier = "asg-handler"
