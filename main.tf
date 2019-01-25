@@ -23,6 +23,7 @@ resource "aws_iam_role_policy" "autoscale_handling" {
       "Action":[
         "autoscaling:DescribeTags",
         "autoscaling:DescribeAutoScalingGroups",
+        "autoscaling:CompleteLifecycleAction",
         "ec2:DescribeInstances",
         "route53:GetHostedZone",
         "ec2:CreateTags"
@@ -89,7 +90,7 @@ resource "aws_iam_role_policy" "lifecycle_policy" {
 data "aws_iam_policy_document" "lifecycle_policy" {
   "statement" {
     effect    = "Allow"
-    actions   = ["sns:Publish"]
+    actions   = ["sns:Publish", "autoscaling:CompleteLifecycleAction",]
     resources = ["${aws_sns_topic.autoscale_handling.arn}"]
   }
 }

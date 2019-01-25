@@ -12,6 +12,9 @@ route53 = boto3.client('route53')
 
 HOSTNAME_TAG_NAME = "asg:hostname_pattern"
 
+LIFECYCLE_KEY = "LifecycleHookName"
+ASG_KEY = "AutoScalingGroupName"
+
 # Fetches private IP of an instance via EC2 API
 def fetch_private_ip_from_ec2(instance_id):
     logger.info("Fetching private IP for instance-id: %s", instance_id)
@@ -133,6 +136,22 @@ def lambda_handler(event, context):
 
     for record in event['Records']:
         process_record(record)
+
+# Finish the asg lifecycle operation by sending a continue result
+    logger.info("Finishing ASG action")
+    message =json.loads(record['Sns']['Message'])
+    if LIFECYCLE_KEY in message and ASG_KEY in message :
+        response = autoscaling.complete_lifecycle_action (
+            LifecycleHookName = message['LifecycleHookName'],
+            AutoScalingGroupName = message['AutoScalingGroupName'],
+            InstanceId = message['EC2InstanceId'],
+            LifecycleActionToken = message['LifecycleActionToken'],
+            LifecycleActionResult = 'CONTINUE'
+        
+        )
+        logger.info("ASG action complete: %s", response)    
+    else :
+        logger.error("No valid JSON message")        
 
 # if invoked manually, assume someone pipes in a event json
 if __name__ == "__main__":
