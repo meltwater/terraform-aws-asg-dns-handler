@@ -78,7 +78,7 @@ resource "aws_autoscaling_group" "my_asg" {
   
   initial_lifecycle_hook {
     name = "lifecycle-launching"
-    default_result = "CONTINUE"
+    default_result = "ABANDON"
     heartbeat_timeout = 60
     lifecycle_transition = "autoscaling:EC2_INSTANCE_LAUNCHING"
     notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
@@ -87,7 +87,7 @@ resource "aws_autoscaling_group" "my_asg" {
 
   initial_lifecycle_hook {
     name = "lifecycle-terminating"
-    default_result = "CONTINUE"
+    default_result = "ABANDON"
     heartbeat_timeout = 60
     lifecycle_transition = "autoscaling:EC2_INSTANCE_TERMINATING"
     notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
@@ -113,6 +113,13 @@ module "autoscale_dns" {
 
 ```
 
+## Difference between Lifecycle action
+Lifecycle_hook can have `CONTINUE` or `ABANDON` as default_result. By setting default_result to `ABANDON` will terminate the instance if the lambda function fails to update the DNS record as required. `Complete_lifecycle_action` in lambda function returns `LifecycleActionResult` as `CONTINUE` on success to Lifecycle_hook. But if lambda function fails, Lifecycle_hook doesn't get any response from `Complete_lifecycle_action` which results in timeout and terminates the instance. 
+
+At the conclusion of a lifecycle hook, the result is either ABANDON or CONTINUE.
+If the instance is launching, CONTINUE indicates that your actions were successful, and that the instance can be put into service. Otherwise, ABANDON indicates that your custom actions were unsuccessful, and that the instance can be terminated.
+
+If the instance is terminating, both ABANDON and CONTINUE allow the instance to terminate. However, ABANDON stops any remaining actions, such as other lifecycle hooks, while CONTINUE allows any other lifecycle hooks to complete.
 
 ## TODO
 
