@@ -25,7 +25,7 @@ resource "aws_autoscaling_group" "test" {
 
   initial_lifecycle_hook {
     name                    = "${aws_launch_configuration.test.id}-lifecycle-launching"
-    default_result          = "CONTINUE"
+    default_result          = "ABANDON"
     heartbeat_timeout       = 60
     lifecycle_transition    = "autoscaling:EC2_INSTANCE_LAUNCHING"
     notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
@@ -34,7 +34,7 @@ resource "aws_autoscaling_group" "test" {
 
   initial_lifecycle_hook {
     name                    = "${aws_launch_configuration.test.id}-lifecycle-terminating"
-    default_result          = "CONTINUE"
+    default_result          = "ABANDON"
     heartbeat_timeout       = 60
     lifecycle_transition    = "autoscaling:EC2_INSTANCE_TERMINATING"
     notification_target_arn = "${module.autoscale_dns.autoscale_handling_sns_topic_arn}"
