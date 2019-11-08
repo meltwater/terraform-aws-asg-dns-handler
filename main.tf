@@ -65,7 +65,7 @@ EOF
 }
 
 resource "aws_iam_role" "lifecycle" {
-  name               = "${var.vpc_name}-lifecycle"
+  name               = "${var.vpc_name}-${var.autoscale_handler_unique_identifier}-lifecycle"
   assume_role_policy = "${data.aws_iam_policy_document.lifecycle.json}"
 }
 
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "lifecycle" {
 }
 
 resource "aws_iam_role_policy" "lifecycle_policy" {
-  name   = "${var.vpc_name}-lifecycle"
+  name   = "${var.vpc_name}-${var.autoscale_handler_unique_identifier}-lifecycle"
   role   = "${aws_iam_role.lifecycle.id}"
   policy = "${data.aws_iam_policy_document.lifecycle_policy.json}"
 }
