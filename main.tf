@@ -111,7 +111,7 @@ resource "aws_lambda_function" "autoscale_handling" {
   role             = "${aws_iam_role.autoscale_handling.arn}"
   handler          = "autoscale.lambda_handler"
   runtime          = "python2.7"
-  source_code_hash = "${base64sha256(file("${data.archive_file.autoscale.output_path}"))}"
+  source_code_hash = "${filebase64sha256("${data.archive_file.autoscale.output_path}")}"
   description      = "Handles DNS for autoscaling groups by receiving autoscaling notifications and setting/deleting records from route53"
 }
 
