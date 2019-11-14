@@ -4,7 +4,7 @@ provider "aws" {
 
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
-  version = "1"
+  version = "~> 1.0"
 
   name = "asg-handler-vpc"
   cidr = "10.0.0.0/16"
