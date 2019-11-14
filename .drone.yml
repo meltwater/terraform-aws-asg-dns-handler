@@ -28,3 +28,4 @@ trigger:
     - master
   event:
   - push
+  - pull_request
