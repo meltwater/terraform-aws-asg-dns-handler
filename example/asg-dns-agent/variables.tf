@@ -19,3 +19,4 @@ variable "ami_id" {
   description = "AMIs by region"
   default     = "ami-f96c5280"
 }
+

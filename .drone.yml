@@ -13,7 +13,7 @@ steps:
   commands:
   - apk add go build-base
   - cd terratest
-  - terrapin -force -tf-version 0.11.8 -directory /usr/local/bin
+  - terrapin -force -tf-version 0.12.14 -directory /usr/local/bin
   - export GOPATH=$(pwd)
   - export PATH=$PATH:$GOPATH/bin
   - go get -u github.com/golang/dep/cmd/dep
@@ -32,6 +32,6 @@ trigger:
   - pull_request
 ---
 kind: signature
-hmac: 5cf0d57469a588f541d45af514e1ee57ef396fa268530c0fc538655a896677fc
+hmac: 06fe1ecacae32cf2da4b91d1f7d57e1dcb051257a4b45137f63732c70dc00f46
 
 ...

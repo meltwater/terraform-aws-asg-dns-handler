@@ -1,10 +1,11 @@
 provider "aws" {
-  region = "${var.aws_region}"
+  version = "~> 2.0"
+  region  = var.aws_region
 }
 
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-  version = "~> 1.0"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 2.0"
 
   name = "asg-handler-vpc"
   cidr = "10.0.0.0/16"
@@ -21,7 +22,8 @@ resource "aws_route53_zone" "test" {
   name          = "asg-handler-vpc.testing"
   force_destroy = true
 
-  vpc { 
-    vpc_id = "${module.vpc.vpc_id}"
+  vpc {
+    vpc_id = module.vpc.vpc_id
   }
 }
+
