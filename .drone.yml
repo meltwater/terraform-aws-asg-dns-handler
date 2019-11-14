@@ -1,3 +1,4 @@
+---
 kind: pipeline
 name: example
 
@@ -29,3 +30,8 @@ trigger:
   event:
   - push
   - pull_request
+---
+kind: signature
+hmac: 5cf0d57469a588f541d45af514e1ee57ef396fa268530c0fc538655a896677fc
+
+...
