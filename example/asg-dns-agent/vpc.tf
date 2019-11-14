@@ -19,6 +19,6 @@ module "vpc" {
 
 resource "aws_route53_zone" "test" {
   name          = "asg-handler-vpc.testing"
-  vpc        = "${module.vpc.vpc_id}"
+  vpc           = ["${module.vpc.vpc_id}"]
   force_destroy = true
 }
