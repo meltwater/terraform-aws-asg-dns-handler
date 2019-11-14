@@ -43,7 +43,7 @@ resource "aws_autoscaling_group" "test" {
 
   name = aws_launch_configuration.test.id
 
-  vpc_zone_identifier = odule.vpc.private_subnets
+  vpc_zone_identifier = module.vpc.private_subnets
 
   min_size                  = var.min_size
   max_size                  = var.max_size
