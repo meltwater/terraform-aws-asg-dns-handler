@@ -105,13 +105,12 @@ resource "aws_autoscaling_group" "my_asg" {
 }
 
 module "autoscale_dns" {
-  source = "/Users/jimsheldon/git/meltwater/terraform-aws-asg-dns-handler"
-
-  autoscale_update_name = "my_asg_handler"
-
+  source = "meltwater/asg-dns-handler/aws"
+  version = "x.y.z"
+  
+  autoscale_update_name     = "my_asg_handler"
   autoscale_route53zone_arn = var.internal_zone_id
-
-  vpc_name = var.vpc_name
+  vpc_name                  = var.vpc_name
 }
 ```
 
