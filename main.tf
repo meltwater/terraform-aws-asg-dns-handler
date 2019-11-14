@@ -99,8 +99,8 @@ data "aws_iam_policy_document" "lifecycle_policy" {
 
 data "archive_file" "autoscale" {
   type        = "zip"
-  source_file = ".${replace(path.module, path.root, "")}/lambda/autoscale/autoscale.py"
-  output_path = ".${replace(path.module, path.root, "")}/lambda/dist/autoscale.zip"
+  source_file = "${path.module}/lambda/autoscale/autoscale.py"
+  output_path = "${path.module}/lambda/dist/autoscale.zip"
 }
 
 resource "aws_lambda_function" "autoscale_handling" {
