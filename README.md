@@ -31,7 +31,7 @@ tag {
 }
 ```
 	
-Once you have your ASG set up, you can just invoke this module and point it to it:
+Once you have your ASG set up, you can just invoke this module and point to it:
 ```hcl
 module "clever_name_autoscale_dns" {
   source  = "meltwater/asg-dns-handler/aws"
