@@ -3,13 +3,18 @@
 # ASG DNS handler
 
 ## Purpose
-This module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by Auto Scaling Groups
+
+This Terraform module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by AWS Auto Scaling Groups (ASGs). 
+
+Learn more about our motivation to build this module in [this blog post](https://underthehood.meltwater.com/blog/2020/02/07/dynamic-route53-records-for-aws-auto-scaling-groups-with-terraform/).
 
 # Requirements
+
 - [Terraform](https://www.terraform.io/downloads.html) 0.12+
 - [Terraform AWS provider](https://github.com/terraform-providers/terraform-provider-aws) 2.0+
 
 ## Usage
+
 Create an ASG and set the `asg:hostname_pattern` tag for example like this:
 
 ```
@@ -39,6 +44,7 @@ module "clever_name_autoscale_dns" {
 ```
 
 ## How does it work?
+
 The module sets up the following
 
 - A SNS topic
@@ -115,6 +121,7 @@ module "autoscale_dns" {
 ```
 
 ## Difference between Lifecycle action
+
 Lifecycle_hook can have `CONTINUE` or `ABANDON` as default_result. By setting default_result to `ABANDON` will terminate the instance if the lambda function fails to update the DNS record as required. `Complete_lifecycle_action` in lambda function returns `LifecycleActionResult` as `CONTINUE` on success to Lifecycle_hook. But if lambda function fails, Lifecycle_hook doesn't get any response from `Complete_lifecycle_action` which results in timeout and terminates the instance. 
 
 At the conclusion of a lifecycle hook, the result is either ABANDON or CONTINUE.
@@ -125,3 +132,7 @@ If the instance is terminating, both ABANDON and CONTINUE allow the instance to 
 ## TODO
 
 - Reverse lookup records?
+
+## License and Copyright
+
+This project was built at Meltwater. It is licensed under the [Apache License 2.0](LICENSE).
