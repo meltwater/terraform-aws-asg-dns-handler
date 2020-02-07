@@ -3,7 +3,9 @@
 # ASG DNS handler
 
 ## Purpose
-This module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by Auto Scaling Groups
+This Terraform module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by AWS Auto Scaling Groups (ASGs). 
+
+Learn more about our motivation to build this module in [this blog post](https://underthehood.meltwater.com/blog/2020/02/07/dynamic-route53-records-for-aws-auto-scaling-groups-with-terraform/).
 
 # Requirements
 - [Terraform](https://www.terraform.io/downloads.html) 0.12+
