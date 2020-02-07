@@ -127,3 +127,7 @@ If the instance is terminating, both ABANDON and CONTINUE allow the instance to 
 ## TODO
 
 - Reverse lookup records?
+
+## License and Copyright
+
+This project was built at Meltwater. It is licensed under the [Apache License 2.0](LICENSE).
