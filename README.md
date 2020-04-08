@@ -114,9 +114,9 @@ module "autoscale_dns" {
   source = "meltwater/asg-dns-handler/aws"
   version = "x.y.z"
   
-  autoscale_update_name     = "my_asg_handler"
-  autoscale_route53zone_arn = var.internal_zone_id
-  vpc_name                  = var.vpc_name
+  autoscale_handler_unique_identifier = "my_asg_handler"
+  autoscale_route53zone_arn           = var.internal_zone_id
+  vpc_name                            = var.vpc_name
 }
 ```
 
