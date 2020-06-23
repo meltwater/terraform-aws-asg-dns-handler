@@ -1,10 +1,10 @@
 output "autoscale_handling_sns_topic_arn" {
-  description = "SNS topic ARN for autocaling group"
+  description = "SNS topic ARN for autoscaling group"
   value       = aws_sns_topic.autoscale_handling.arn
 }
 
 output "autoscale_iam_role_arn" {
-  description = "IAM role ARN for autocscaling group"
+  description = "IAM role ARN for autoscaling group"
   value       = aws_iam_role.autoscale_handling.arn
 }
 
