@@ -36,7 +36,7 @@ Once you have your ASG set up, you can just invoke this module and point to it:
 module "clever_name_autoscale_dns" {
   source  = "meltwater/asg-dns-handler/aws"
   version = "x.y.z"
-
+  # use_public_ip = true
   autoscale_handler_unique_identifier = "clever_name"
   autoscale_route53zone_arn           = "ABCDEFGHIJ123"
   vpc_name                            = "my_vpc"
