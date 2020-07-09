@@ -17,17 +17,16 @@ LIFECYCLE_KEY = "LifecycleHookName"
 ASG_KEY = "AutoScalingGroupName"
 
 # Fetches private IP of an instance via EC2 API
-def fetch_private_ip_from_ec2(instance_id):
+def fetch_ip_from_ec2(instance_id):
     logger.info("Fetching private IP for instance-id: %s", instance_id)
 
     ec2_response = ec2.describe_instances(InstanceIds=[instance_id])
-    print(ec2_response)
     if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
         ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PublicIpAddress']
+        logger.info("Found public IP for instance-id %s: %s", instance_id, ip_address)
     else:
         ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PrivateIpAddress']
-
-    logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
+        logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
 
     return ip_address
 
@@ -125,7 +124,7 @@ def process_message(message):
     hostname = build_hostname(hostname_pattern, instance_id)
 
     if operation == "UPSERT":
-        private_ip = fetch_private_ip_from_ec2(instance_id)
+        private_ip = fetch_ip_from_ec2(instance_id)
 
         update_name_tag(instance_id, hostname)
     else:
