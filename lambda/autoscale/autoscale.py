@@ -2,6 +2,7 @@ import json
 import logging
 import boto3
 import sys
+import os
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -20,7 +21,11 @@ def fetch_private_ip_from_ec2(instance_id):
     logger.info("Fetching private IP for instance-id: %s", instance_id)
 
     ec2_response = ec2.describe_instances(InstanceIds=[instance_id])
-    ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PrivateIpAddress']
+    print(ec2_response)
+    if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
+        ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PublicIpAddress']
+    else:
+        ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PrivateIpAddress']
 
     logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
 
@@ -101,6 +106,9 @@ def update_record(zone_id, ip, hostname, operation):
 # Processes a scaling event
 # Builds a hostname from tag metadata, fetches a private IP, and updates records accordingly
 def process_message(message):
+    if 'LifecycleTransition' not in message:
+        logger.info("Processing %s event", message['Event'])
+        return
     logger.info("Processing %s event", message['LifecycleTransition'])
 
     if message['LifecycleTransition'] == "autoscaling:EC2_INSTANCE_LAUNCHING":
