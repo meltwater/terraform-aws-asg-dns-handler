@@ -16,23 +16,22 @@ HOSTNAME_TAG_NAME = "asg:hostname_pattern"
 LIFECYCLE_KEY = "LifecycleHookName"
 ASG_KEY = "AutoScalingGroupName"
 
-# Fetches private IP of an instance via EC2 API
+# Fetches IP of an instance via EC2 API
 def fetch_ip_from_ec2(instance_id):
-    logger.info("Fetching private IP for instance-id: %s", instance_id)
-
+    logger.info("Fetching IP for instance-id: %s", instance_id)
     ec2_response = ec2.describe_instances(InstanceIds=[instance_id])
     if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
-        ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PublicIpAddress']
+        ip_address = ec2_response['Reservations'][0]['Instances'][0]['PublicIpAddress']
         logger.info("Found public IP for instance-id %s: %s", instance_id, ip_address)
     else:
-        ip_address = ec2_response['Reservations'][0]['Instances'][0]['NetworkInterfaces'][0]['PrivateIpAddress']
+        ip_address = ec2_response['Reservations'][0]['Instances'][0]['PrivateIpAddress']
         logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
 
     return ip_address
 
-# Fetches private IP of an instance via route53 API
-def fetch_private_ip_from_route53(hostname, zone_id):
-    logger.info("Fetching private IP for hostname: %s", hostname)
+# Fetches IP of an instance via route53 API
+def fetch_ip_from_route53(hostname, zone_id):
+    logger.info("Fetching IP for hostname: %s", hostname)
 
     ip_address = route53.list_resource_record_sets(
         HostedZoneId=zone_id,
@@ -41,7 +40,7 @@ def fetch_private_ip_from_route53(hostname, zone_id):
         MaxItems='1'
     )['ResourceRecordSets'][0]['ResourceRecords'][0]['Value']
 
-    logger.info("Found private IP for hostname %s: %s", hostname, ip_address)
+    logger.info("Found IP for hostname %s: %s", hostname, ip_address)
 
     return ip_address
 
@@ -103,7 +102,7 @@ def update_record(zone_id, ip, hostname, operation):
     )
 
 # Processes a scaling event
-# Builds a hostname from tag metadata, fetches a private IP, and updates records accordingly
+# Builds a hostname from tag metadata, fetches a IP, and updates records accordingly
 def process_message(message):
     if 'LifecycleTransition' not in message:
         logger.info("Processing %s event", message['Event'])
@@ -124,13 +123,13 @@ def process_message(message):
     hostname = build_hostname(hostname_pattern, instance_id)
 
     if operation == "UPSERT":
-        private_ip = fetch_ip_from_ec2(instance_id)
+        ip = fetch_ip_from_ec2(instance_id)
 
         update_name_tag(instance_id, hostname)
     else:
-        private_ip = fetch_private_ip_from_route53(hostname, zone_id)
+        ip = fetch_ip_from_route53(hostname, zone_id)
 
-    update_record(zone_id, private_ip, hostname, operation)
+    update_record(zone_id, ip, hostname, operation)
 
 # Picks out the message from a SNS message and deserializes it
 def process_record(record):
@@ -154,14 +153,15 @@ def lambda_handler(event, context):
             InstanceId = message['EC2InstanceId'],
             LifecycleActionToken = message['LifecycleActionToken'],
             LifecycleActionResult = 'CONTINUE'
-        
+
         )
-        logger.info("ASG action complete: %s", response)    
+        logger.info("ASG action complete: %s", response)
     else :
-        logger.error("No valid JSON message")        
+        logger.error("No valid JSON message")
 
 # if invoked manually, assume someone pipes in a event json
 if __name__ == "__main__":
     logging.basicConfig()
 
     lambda_handler(json.load(sys.stdin), None)
+
