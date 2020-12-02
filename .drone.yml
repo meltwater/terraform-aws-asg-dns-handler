@@ -14,9 +14,6 @@ steps:
   - apk add go build-base
   - cd terratest
   - terrapin -force -tf-version 0.12.21 -directory /usr/local/bin
-  - go get github.com/gruntwork-io/terratest/modules/aws
-  - go get github.com/gruntwork-io/terratest/modules/terraform
-  - go get github.com/stretchr/testify/assert
   - cd test
   - go test -v -run TestAwsDnsRecordName
 
