@@ -3,7 +3,7 @@ variable "autoscale_handler_unique_identifier" {
 }
 
 variable "vpc_name" {
-  description = "The name of the VPC"
+  description = "The name of the VPC. Typically the DNS zone eg example.com"
 }
 
 variable "use_public_ip" {
