@@ -16,16 +16,32 @@ HOSTNAME_TAG_NAME = "asg:multihost_pattern"
 LIFECYCLE_KEY = "LifecycleHookName"
 ASG_KEY = "AutoScalingGroupName"
 
+# Constrints of running a pool
+# If multiple events are happening in quick succession we may get into situiations where latter runs pickup instances that have not finished terminating.
+# In situiations were multiple terminations are expected it may be better to change the logic from
+#  * Scanning the ASG and building the IP list from there
+# to
+#  * Grabbing the IP list from EC2 and stripping out the instance. This may require more information to be stored in TXT entries to map instance ID's to IP addresses
+# In general it is expected that on busy ASG's there will be residual IP's
+
 # Fetches IP of an instance via EC2 API
 def fetch_ip_from_ec2(instance_id):
     logger.info("Fetching IP for instance-id: %s", instance_id)
-    ec2_response = ec2.describe_instances(InstanceIds=[instance_id])
-    if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
-        ip_address = ec2_response['Reservations'][0]['Instances'][0]['PublicIpAddress']
-        logger.info("Found public IP for instance-id %s: %s", instance_id, ip_address)
-    else:
-        ip_address = ec2_response['Reservations'][0]['Instances'][0]['PrivateIpAddress']
-        logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
+    ip_address = None
+    ec2_response = ec2.describe_instances(InstanceIds=[instance_id])['Reservations'][0]['Instances'][0]
+    if ec2_response['State']['Name'] == 'running':
+      if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
+        try:
+          ip_address = ec2_response['PublicIpAddress']
+          logger.info("Found public IP for instance-id %s: %s", instance_id, ip_address)
+        except:
+          logger.info("No public IP for instance-id %s: %s", instance_id, ip_address)
+      else:
+        try:
+          ip_address = ec2_response['PrivateIpAddress']
+          logger.info("Found private IP for instance-id %s: %s", instance_id, ip_address)
+        except:
+          logger.info("No private IP for instance-id %s: %s", instance_id, ip_address)
 
     return ip_address
 
@@ -102,13 +118,21 @@ def update_record(zone_id, ips, hostname):
         }
     )
 
-def process_asg(autoScalingGroupName, hostname):
+def process_asg(auto_scaling_group_name, hostname, ignore_instance):
   # Iterate through the instance group: Put IP addresses into a list and update the instance names to match the group.
+  # ignore_instance should only be provided if we are terminating an instance.
   ips = []
   # IP's is a list of dictionaries [{'Value': ipAddr1},{'Value': ipAddr2}] eg [{'Value':'127.0.0.1'}]
-  for instance in autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=[autoScalingGroupName])['AutoScalingGroups'][0]['Instances']:
-    ips.append({'Value': fetch_ip_from_ec2(instance['InstanceId']) })
-    update_name_tag(instance['InstanceId'], hostname)
+  if ignore_instance is None:
+    logger.info("Processing ASG %s", auto_scaling_group_name)
+  else:
+    logger.info("Ignoring instance-id %s while Processing ASG %s", ignore_instance, auto_scaling_group_name)
+  for instance in autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=[auto_scaling_group_name])['AutoScalingGroups'][0]['Instances']:
+    if ignore_instance != instance['InstanceId']:
+      ipAddr = fetch_ip_from_ec2(instance['InstanceId'])
+      if ipAddr is not None:
+        ips.append({'Value': ipAddr})
+        update_name_tag(instance['InstanceId'], hostname)
   return ips
 
 
@@ -126,10 +150,15 @@ def process_message(message):
     asg_name    = message['AutoScalingGroupName']
     instance_id = message['EC2InstanceId']
 
+    ignore_instance = None
+    if message['LifecycleTransition'] == 'autoscaling:EC2_INSTANCE_TERMINATING':
+      ignore_instance = instance_id
+      logger.info("The following instance-id should be ignored %s", instance_id)
+
     hostname, zone_id = fetch_tag_metadata(asg_name)
 
-    ipAddrs = process_asg(asg_name, hostname)
-    update_record(zone_id, ipAddrs, hostname)
+    ip_addrs = process_asg(asg_name, hostname, ignore_instance)
+    update_record(zone_id, ip_addrs, hostname)
 
 # Picks out the message from a SNS message and deserializes it
 def process_record(record):

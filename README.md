@@ -40,6 +40,14 @@ Also note the ASG lifestyle_hook should use `notification_target_arn = module.au
 
 While you could have a host in both the `-#instanceid` and single DNS name, it is advised against doing this as both handlers will attempt to rename the instance. The DNS should be fine, the instance name will be in an unknown state.
 
+**Constrints of running a pool**
+If multiple events are happening in quick succession we may get into situiations where latter runs pickup instances that have not finished terminating.
+In situiations were multiple terminations are expected it may be better to change the logic from
+ * Scanning the ASG and building the IP list from there
+to
+ * Grabbing the IP list from EC2 and stripping out the instance. This may require more information to be stored in TXT entries to map instance ID's to IP addresses
+In general it is expected that on busy ASG's there will be residual IP's between scaling events
+
 ```hcl
 tag {
   key                 = "asg:multihost_pattern"
