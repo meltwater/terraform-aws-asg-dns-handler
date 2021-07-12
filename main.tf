@@ -115,7 +115,8 @@ resource "aws_lambda_function" "autoscale_handling" {
   description      = "Handles DNS for autoscaling groups by receiving autoscaling notifications and setting/deleting records from route53"
   environment {
     variables = {
-      "use_public_ip" = var.use_public_ip
+      "use_public_ip" = var.use_public_ip,
+      "update_instance_name_tag" = var.update_instance_name_tag
     }
   }
 }

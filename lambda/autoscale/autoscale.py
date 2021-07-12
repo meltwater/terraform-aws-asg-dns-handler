@@ -125,7 +125,8 @@ def process_message(message):
     if operation == "UPSERT":
         ip = fetch_ip_from_ec2(instance_id)
 
-        update_name_tag(instance_id, hostname)
+        if os.getenv("update_instance_name_tag", "true") == "true":
+            update_name_tag(instance_id, hostname)
     else:
         ip = fetch_ip_from_route53(hostname, zone_id)
 
