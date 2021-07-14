@@ -54,11 +54,11 @@ The module sets up the following
 The Lambda function then does the following:
 
 - Fetch the `asg:hostname_pattern` tag value from the ASG, and parse out the hostname and Route53 zone ID from it.
-- If it's an instance being created
+- If it's an instance being **created**
 	- Fetch internal IP from EC2 API
 	- Create a Route53 record pointing the hostname to the IP
 	- Set the Name tag of the instance to the initial part of the generated hostname
-- If it's an instance being deleted
+- If it's an instance being **deleted**
 	- Fetch the internal IP from the existing record from the Route53 API
 	- Delete the record
 
