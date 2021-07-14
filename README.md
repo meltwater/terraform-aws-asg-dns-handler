@@ -129,10 +129,6 @@ If the instance is launching, CONTINUE indicates that your actions were successf
 
 If the instance is terminating, both ABANDON and CONTINUE allow the instance to terminate. However, ABANDON stops any remaining actions, such as other lifecycle hooks, while CONTINUE allows any other lifecycle hooks to complete.
 
-## TODO
-
-- Reverse lookup records?
-
 ## License and Copyright
 
 This project was built at Meltwater. It is licensed under the [Apache License 2.0](LICENSE).
