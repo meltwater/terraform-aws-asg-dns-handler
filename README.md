@@ -4,11 +4,11 @@
 
 ## Purpose
 
-This Terraform module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by AWS Auto Scaling Groups (ASGs). 
+This Terraform module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by AWS Auto Scaling Groups (ASGs).
 
 Learn more about our motivation to build this module in [this blog post](https://underthehood.meltwater.com/blog/2020/02/07/dynamic-route53-records-for-aws-auto-scaling-groups-with-terraform/).
 
-# Requirements
+## Requirements
 
 - [Terraform](https://www.terraform.io/downloads.html) 0.12+
 - [Terraform AWS provider](https://github.com/terraform-providers/terraform-provider-aws) 2.0+
@@ -30,7 +30,7 @@ tag {
   propagate_at_launch = true
 }
 ```
-	
+
 Once you have your ASG set up, you can just invoke this module and point to it:
 ```hcl
 module "clever_name_autoscale_dns" {
@@ -54,7 +54,7 @@ The module sets up the following
 The Lambda function then does the following:
 
 - Fetch the `asg:hostname_pattern` tag value from the ASG, and parse out the hostname and Route53 zone ID from it.
-- If it's a instance being created
+- If it's an instance being created
 	- Fetch internal IP from EC2 API
 	- Create a Route53 record pointing the hostname to the IP
 	- Set the Name tag of the instance to the initial part of the generated hostname
@@ -113,7 +113,7 @@ resource "aws_autoscaling_group" "my_asg" {
 module "autoscale_dns" {
   source = "meltwater/asg-dns-handler/aws"
   version = "x.y.z"
-  
+
   autoscale_handler_unique_identifier = "my_asg_handler"
   autoscale_route53zone_arn           = var.internal_zone_id
   vpc_name                            = var.vpc_name
@@ -122,7 +122,7 @@ module "autoscale_dns" {
 
 ## Difference between Lifecycle action
 
-Lifecycle_hook can have `CONTINUE` or `ABANDON` as default_result. By setting default_result to `ABANDON` will terminate the instance if the lambda function fails to update the DNS record as required. `Complete_lifecycle_action` in lambda function returns `LifecycleActionResult` as `CONTINUE` on success to Lifecycle_hook. But if lambda function fails, Lifecycle_hook doesn't get any response from `Complete_lifecycle_action` which results in timeout and terminates the instance. 
+Lifecycle_hook can have `CONTINUE` or `ABANDON` as default_result. By setting default_result to `ABANDON` will terminate the instance if the lambda function fails to update the DNS record as required. `Complete_lifecycle_action` in lambda function returns `LifecycleActionResult` as `CONTINUE` on success to Lifecycle_hook. But if lambda function fails, Lifecycle_hook doesn't get any response from `Complete_lifecycle_action` which results in timeout and terminates the instance.
 
 At the conclusion of a lifecycle hook, the result is either ABANDON or CONTINUE.
 If the instance is launching, CONTINUE indicates that your actions were successful, and that the instance can be put into service. Otherwise, ABANDON indicates that your custom actions were unsuccessful, and that the instance can be terminated.
