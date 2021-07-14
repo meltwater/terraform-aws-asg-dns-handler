@@ -64,7 +64,7 @@ The Lambda function then does the following:
 
 ## Setup
 
-Add `initial_lifecycle_hook` definitions to your `aws_autoscaling_group resource` , like so:
+Add `initial_lifecycle_hook` definitions to your `aws_autoscaling_group` resource , like so:
 
 ```hcl
 resource "aws_autoscaling_group" "my_asg" {
