@@ -45,11 +45,11 @@ module "clever_name_autoscale_dns" {
 
 ## How does it work?
 
-The module sets up the following
+The module sets up these things:
 
-- A SNS topic
-- A Lambda function
-- A topic subscription sending SNS events to the Lambda function
+1. A SNS topic
+2. A Lambda function
+3. A topic subscription sending SNS events to the Lambda function
 
 The Lambda function then does the following:
 
