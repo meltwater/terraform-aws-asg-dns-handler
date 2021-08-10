@@ -36,13 +36,21 @@ Once you have your ASG set up, you can just invoke this module and point to it:
 module "clever_name_autoscale_dns" {
   source  = "meltwater/asg-dns-handler/aws"
   version = "x.y.z"
-
   # use_public_ip = true
-  # update_instance_name_tag = false
-
   autoscale_handler_unique_identifier = "clever_name"
   autoscale_route53zone_arn           = "ABCDEFGHIJ123"
   vpc_name                            = "my_vpc"
+}
+```
+
+By default, this module will also update the `Name` tag of your instance to match the short name of your pattern. If
+you want to opt-out of this behavior, you can add an additional tag to your auto scaling group:
+
+```hcl
+tag {
+  key                 = "asg:update_instance_name"
+  value               = "false"
+  propagate_at_launch = true
 }
 ```
 
@@ -111,6 +119,12 @@ resource "aws_autoscaling_group" "my_asg" {
     value               = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.testing@${var.internal_zone_id}"
     propagate_at_launch = true
   }
+
+  # tag {
+  #   key                 = "asg:update_instance_name"
+  #   value               = "false"
+  #   propagate_at_launch = true
+  # }
 }
 
 module "autoscale_dns" {
