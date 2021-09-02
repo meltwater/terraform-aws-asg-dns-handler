@@ -18,12 +18,30 @@ module "vpc" {
   enable_vpn_gateway = true
 }
 
-resource "aws_route53_zone" "test" {
-  name          = "asg-handler-vpc.testing"
-  force_destroy = true
+resource "aws_security_group" "test" {
+  vpc_id = module.vpc.vpc_id
+  name   = "asg-handler-vpc-test-agent"
 
-  vpc {
-    vpc_id = module.vpc.vpc_id
+  tags = {
+    Name = "asg-handler"
+  }
+
+  # allow traffic within security group
+  ingress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = module.vpc.private_subnets_cidr_blocks
+  }
+
+  egress {
+    from_port = 0
+    to_port   = 0
+    protocol  = "-1"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
   }
 }
-

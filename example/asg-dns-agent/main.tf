@@ -61,36 +61,17 @@ resource "aws_autoscaling_group" "test" {
 
   tag {
     key                 = "asg:hostname_pattern"
+    # Ensure that the value you choose here contains a fully qualified domain name for the zone before the @ symbol
     value               = "asg-test-#instanceid.asg-handler-vpc.testing@${aws_route53_zone.test.id}"
     propagate_at_launch = true
   }
 }
 
-resource "aws_security_group" "test" {
-  vpc_id = module.vpc.vpc_id
-  name   = "asg-handler-vpc-test-agent"
+resource "aws_route53_zone" "test" {
+  name          = "asg-handler-vpc.testing"
+  force_destroy = true
 
-  tags = {
-    Name = "asg-handler"
-  }
-
-  # allow traffic within security group
-  ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-
-    cidr_blocks = module.vpc.private_subnets_cidr_blocks
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-
-    cidr_blocks = [
-      "0.0.0.0/0",
-    ]
+  vpc {
+    vpc_id = module.vpc.vpc_id
   }
 }
-
