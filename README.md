@@ -21,7 +21,9 @@ Create an ASG and set the `asg:hostname_pattern` tag for example like this:
 asg-test-#instanceid.asg-handler-vpc.testing@Z3QP9GZSRL8IVA
 ```
 
-Could be interpolated in Terraform like this:
+`#instanceid`  is converted by a Lambda function within this module to the actual AWS instance_id that corresponds to the launched instance.  The `@` symbol is used to split the FQDN from the Route 53 zone_id.
+
+This could be interpolated in Terraform like this:
 
 ```hcl
 tag {
