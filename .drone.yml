@@ -16,8 +16,18 @@ steps:
   - terrapin -force -tf-version 0.12.21 -directory /usr/local/bin
   - cd test
   - go test -v -run TestAwsDnsRecordName
+
+# Failsafe to destroy created resources if the tests panic exit
+- name: destroy-resources
+  image: meltwaterfoundation/drone-terrafy
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: aws_access_key_id
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: aws_secret_access_key
+  commands:
+  - apk add go build-base      
   - cd /drone/src/example/asg-dns-agent
-  # Failsafe to destroy created resources if the tests panic exit
   - terraform destroy -auto-approve
 
 trigger:
