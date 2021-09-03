@@ -16,6 +16,9 @@ steps:
   - terrapin -force -tf-version 0.12.21 -directory /usr/local/bin
   - cd test
   - go test -v -run TestAwsDnsRecordName
+  - cd /drone/src/example/asg-dns-agent
+  # Failsafe to destroy created resources if the tests panic exit
+  - terraform destroy -auto-approve
 
 trigger:
   branch:
@@ -24,6 +27,7 @@ trigger:
   event:
   - push
   - pull_request
+
 ---
 kind: signature
 hmac: 06fe1ecacae32cf2da4b91d1f7d57e1dcb051257a4b45137f63732c70dc00f46
