@@ -62,7 +62,7 @@ resource "aws_autoscaling_group" "test" {
   tag {
     key                 = "asg:hostname_pattern"
     # Ensure that the value you choose here contains a fully qualified domain name for the zone before the @ symbol
-    value               = "asg-test-#instanceid.asg-handler-vpc.testing@${aws_route53_zone.test.id}"
+    value               = "asg-test-#instanceid@${aws_route53_zone.test.id}"
     propagate_at_launch = true
   }
 }
