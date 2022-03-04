@@ -2,6 +2,9 @@
 
 # ASG DNS handler
 
+## Deprecated
+This branch supporting Terraform v0.11 has been deprecated.  Please update to v2.0.0 of this module or greater.
+
 ## Purpose
 This module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by Auto Scaling Groups
 
