@@ -13,6 +13,8 @@ Configuration in this directory creates a minimal set of resources used to demon
 
 To run this example :
 
-```$ terraform init
+```
+$ terraform init
 $ terraform plan
-$ terraform apply```
+$ terraform apply
+```
