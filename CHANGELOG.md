@@ -8,63 +8,85 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
-- Nothing.
+- [#46](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/46) Create CHANGELOG.md
 
-### Changed
+## [v2.1.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.3...v2.1.4) - 2022-03-04
 
-- Nothing.
+- Update examples and tests [#44](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/44)
 
-### Removed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-## [1.2.2] - 2021-10-01
-
-- [#188](https://github.com/meltwater/drone-cache/pull/188) v1.2.0 breaks EC2 IAM role bucket access
-
-## [1.2.1] - 2021-09-30
+## [v2.1.3](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.2...v2.1.3) - 2021-10-14
 
 ### Added
 
-- [#183](https://github.com/meltwater/drone-cache/pull/183) set goarch for arm64 goreleaser
-
-## [1.2.0] - 2021-09-29
-
-**Warning** arm64 docker images are broken in this release, please use to 1.2.1
-
-### Added
-
-- [#146](https://github.com/meltwater/drone-cache/issues/146) Provide an arm image
-  - Multiple PRs
-- [#99](https://github.com/meltwater/drone-cache/issues/99) Document building images and pushing locally for PR testing
-- [#142](https://github.com/meltwater/drone-cache/issues/142) backend/s3: Add option to assume AWS IAM role
-- [#102](https://github.com/meltwater/drone-cache/pull/102) Implement option to disable cache rebuild if it already exists in storage.
-- [#86](https://github.com/meltwater/drone-cache/pull/86) Add backend operation timeout option that cancels request if they take longer than given duration. `BACKEND_OPERATION_TIMEOUT`, `backend.operation-timeot`. Default value is `3 minutes`.
-- [#86](https://github.com/meltwater/drone-cache/pull/86) Customize the cache key in the path. Adds a new `remote_root` option to customize it. Defaults to `repo.name`.
-  - Fixes [#97](https://github.com/meltwater/drone-cache/issues/97).
-  [#89](https://github.com/meltwater/drone-cache/pull/89) Add Azure Storage Backend.
-  [#84](https://github.com/meltwater/drone-cache/pull/84) Adds compression level option.
-  [#77](https://github.com/meltwater/drone-cache/pull/77) Adds a new hidden CLI flag to be used for tests.
-  [#73](https://github.com/meltwater/drone-cache/pull/73) Add Google Cloud storage support
-  [#68](https://github.com/meltwater/drone-cache/pull/68) Introduces new storage backend, sFTP.
+- Added CONTRIBUTING.md file and templates for created issues and pull request.
 
 ### Changed
 
-- [#138](https://github.com/meltwater/drone-cache/pull/138) backend/gcs: Fix GCS to pass credentials correctly when `GCS_ENDPOINT` is not set.
-- [#135](https://github.com/meltwater/drone-cache/issues/135) backend/gcs: Fixed parsing of GCS JSON key.
-- [#151](https://github.com/meltwater/drone-cache/issues/151) backend/s3: Fix assume role parameter passing
-- [#164](https://github.com/meltwater/drone-cache/issues/164) tests: lock azurite image to 3.10.0
-- [#133](https://github.com/meltwater/drone-cache/pull/133) backend/s3: Fixed Anonymous Credentials Error on public buckets. 
-  - Fixes [#132](https://github.com/meltwater/drone-cache/issues/132)
+- Improved user docs
 
-### Removed
+## [v2.1.2](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.1...v2.1.2) - 2021-07-16
 
-- Nothing.
+### Changed
 
-### Deprecated
+- Changes to readme content to clarify things a bit further.
 
-- Nothing.
+## [v1.0.5](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.4...v1.0.5) - 2021-07-01
+
+### Changed
+
+- Upgrade Lambda function to use Python 3.8 runtime
+
+## [v2.1.1](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.0...v2.1.1) - 2021-06-28
+
+### Changed
+
+- [#32](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/32) - Upgrade Lambda runtime to Python3.8.
+
+  This upgrade is being made as AWS is [ending support in Lambda](https://aws.amazon.com/de/blogs/compute/announcing-end-of-support-for-python-2-7-in-aws-lambda/) for the Python 2.7 runtime.
+
+## [v2.1.0](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.0.1...v2.1.0) - 2020-12-02
+
+### Added
+
+- [#26](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/26) - Add possibility to use public IP
+
+## [v2.0.1](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.0.0...v2.0.1) - 2020-11-06
+
+### Changed
+
+- registry.terraform.io to pull in latest changes in master
+
+## [v2.0.0](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.4...v2.0.0) - 2021-07-01
+
+### Changed
+
+- Updating to Terraform 0.12 ([#21](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/21) [@jimsheldon](https://github.com/jimsheldon))
+
+## [v1.0.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.3...v1.0.4 - 2019-11-14
+
+### Added
+
+- Added unique id's to allow multiple uses within the same account ([#17](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/17) [@seanturner83](https://github.com/seanturner83))
+
+### Changed
+
+- Updated testing scenarios for latest aws provider ([#20](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/20) [@hikerspath](https://github.com/hikerspath))
+
+## [v1.0.3](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.2...v1.0.3) - 2019-02-11
+
+### Fixed
+
+- Fix for Lifecycle_hooks
+
+## [v1.0.2](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.1...v1.0.2) - 2019-01-21
+
+### Changed
+
+- Outputs.tf and variables.tf updated.
+
+## [v1.0.1](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.2...v1.0.1) - 2019-01-21
+
+### Added
+
+- Initial public release.
+
