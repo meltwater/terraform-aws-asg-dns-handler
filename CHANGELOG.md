@@ -10,6 +10,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - [#46](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/46) Create CHANGELOG.md
 
+
+
+
 ## [v2.1.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.3...v2.1.4) - 2022-03-04
 
 - Update examples and tests [#44](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/44)
@@ -62,7 +65,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - Updating to Terraform 0.12 ([#21](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/21) [@jimsheldon](https://github.com/jimsheldon))
 
-## [v1.0.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.3...v1.0.4 - 2019-11-14
+## [v1.0.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v1.0.3...v1.0.4) - 2019-11-14
 
 ### Added
 
