@@ -105,7 +105,9 @@ resource "aws_autoscaling_group" "my_asg" {
 }
 
 module "autoscale_dns" {
-  source = "github.com/meltwater/terraform-aws-asg-dns-handler"
+  source = "meltwater/asg-dns-handler/aws"
+  
+  version = "1.1.1"
 
   autoscale_update_name = "my_asg_handler"
 
