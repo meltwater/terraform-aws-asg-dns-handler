@@ -36,8 +36,8 @@ tag {
 Once you have your ASG set up, you can just invoke this module and point to it:
 ```hcl
 module "clever_name_autoscale_dns" {
-  source  = "meltwater/asg-dns-handler/aws"
-  version = "x.y.z"
+  source  = "app.terraform.io/meltwater/asg-dns-handler/aws"
+  version = "2.1.5"
   # use_public_ip = true
   autoscale_handler_unique_identifier = "clever_name"
   autoscale_route53zone_arn           = "ABCDEFGHIJ123"
@@ -113,8 +113,8 @@ resource "aws_autoscaling_group" "my_asg" {
 }
 
 module "autoscale_dns" {
-  source = "meltwater/asg-dns-handler/aws"
-  version = "x.y.z"
+  source  = "app.terraform.io/meltwater/asg-dns-handler/aws"
+  version = "2.1.5"
 
   autoscale_handler_unique_identifier = "my_asg_handler"
   autoscale_route53zone_arn           = var.internal_zone_id
@@ -124,7 +124,7 @@ module "autoscale_dns" {
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) to understand how to submit pull requests to us, and also see our [code of conduct](CODE_OF_CONDUCT.md).
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) to understand how to submit pull requests to us, and also see our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## Difference between Lifecycle action
 
