@@ -113,8 +113,8 @@ resource "aws_autoscaling_group" "my_asg" {
 }
 
 module "autoscale_dns" {
-  source  = "app.terraform.io/meltwater/asg-dns-handler/aws"
-  version = "2.1.5"
+  source  = "registry.terraform.io/modules/meltwater/asg-dns-handler/aws/latest"
+  version = "2.1.6"
 
   autoscale_handler_unique_identifier = "my_asg_handler"
   autoscale_route53zone_arn           = var.internal_zone_id
