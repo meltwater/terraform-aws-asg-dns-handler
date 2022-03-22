@@ -8,14 +8,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Added
 
+## [v2.1.7](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.6...v2.1.7) - 2022-03-22
+
+### Changed
+
+- Updated readme for proper module calls from public registry
+
+
+## [v2.1.6](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.5...v2.1.6) - 2022-03-22
+
+### Changed
+
+- Updated readme
+
 ## [v2.1.5](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.4...v2.1.5) - 2022-03-22
 
 - Updated Source Reference on the README.md for the Private Registry on app.terraform.io
 
 - [#46](https://github.com/meltwater/terraform-aws-asg-dns-handler/pull/46) Create CHANGELOG.md
-
-
-
 
 ## [v2.1.4](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.3...v2.1.4) - 2022-03-04
 
