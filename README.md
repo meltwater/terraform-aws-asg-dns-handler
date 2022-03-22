@@ -1,19 +1,19 @@
-[![Build Status](https://cloud.drone.io/api/badges/meltwater/terraform-aws-asg-dns-handler/status.svg)](https://cloud.drone.io/meltwater/terraform-aws-asg-dns-handler)
-
-# ASG DNS handler
-
-## Purpose
+# ASG DNS handler | [![Build Status](https://cloud.drone.io/api/badges/meltwater/terraform-aws-asg-dns-handler/status.svg)](https://cloud.drone.io/meltwater/terraform-aws-asg-dns-handler)
 
 This Terraform module sets up everything necessary for dynamically setting hostnames following a certain pattern on instances spawned by AWS Auto Scaling Groups (ASGs).
 
 Learn more about our motivation to build this module in our blog post [Dynamic Route53 records for AWS Auto Scaling Groups with Terraform](https://underthehood.meltwater.com/blog/2020/02/07/dynamic-route53-records-for-aws-auto-scaling-groups-with-terraform/).
 
+## Maintainers
+
+This repository and the module it houses are maintained Foundation Missions A-Team.  Should you encounter issues or require changes to code maintained in this repository, please reachout through an issue that is part of this project.
+
 ## Requirements
 
-- [Terraform](https://www.terraform.io/downloads.html) 0.12+
-- [Terraform AWS provider](https://github.com/terraform-providers/terraform-provider-aws) 2.0+
+- [Terraform](https://www.terraform.io/downloads.html) 0.12+ and [Terraform AWS provider](https://github.com/terraform-providers/terraform-provider-aws) 2.0+ use v2+ releases
+- [Terraform](https://www.terraform.io/downloads.html) 0.11 and below, [Terraform AWS provider](https://github.com/terraform-providers/terraform-provider-aws) 2.0.14 and below use v1.x releases
 
-## Usage
+## How do I use it?
 
 Create an ASG and set the `asg:hostname_pattern` tag for example like this:
 
@@ -123,7 +123,7 @@ module "autoscale_dns" {
 }
 ```
 
-## Contributing
+## Developers Guide / Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) to understand how to submit pull requests to us, and also see our [Code of Conduct](CODE_OF_CONDUCT.md).
 
