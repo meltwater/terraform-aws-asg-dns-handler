@@ -11,7 +11,7 @@ autoscaling = boto3.client('autoscaling')
 ec2 = boto3.client('ec2')
 route53 = boto3.client('route53')
 
-HOSTNAME_TAG_NAME = "asg:hostname_pattern"
+HOSTNAME_TAG_NAME = os.environ['hostname_tag_name']
 
 LIFECYCLE_KEY = "LifecycleHookName"
 ASG_KEY = "AutoScalingGroupName"
