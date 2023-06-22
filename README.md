@@ -123,6 +123,116 @@ module "autoscale_dns" {
 }
 ```
 
+## Setup for multiple DNS zones
+
+This example (CDKTF/Typescript) demonstrates how to use the asg-dns-handler for simultaneous updating of both private and public zones.
+
+```typescript
+import { AsgDnsHandler, AsgDnsHandlerConfig } from ".gen/modules/asg-dns-handler"
+import {
+  AutoscalingGroup,
+  AutoscalingGroupConfig,
+  AutoscalingGroupInitialLifecycleHook,
+  AutoscalingGroupTag
+} from ".gen/providers/aws/autoscaling-group"
+import { LaunchTemplate } from ".gen/providers/aws/launch-template"
+
+interface InstanceConfigDNSHandler {
+  ZoneId: string
+  ZoneName: string
+  Prefix: string
+}
+
+interface InstanceConfig {
+  vpcId: string
+  vpcName: string
+  subnetId: string
+  name: string
+  privateDNS: InstanceConfigDNSHandler
+  publicDNS: InstanceConfigDNSHandler
+}
+
+let config: InstanceConfig
+let launchTemplate: LaunchTemplate
+
+const hostnamePatternPrivate = "asg:hostname_pattern:private"
+const hostnamePatternPublic = "asg:hostname_pattern:public"
+
+const asgDNSHandlerPrivate = new AsgDnsHandler(this, "asg_dns_handler_private", <AsgDnsHandlerConfig>{
+  autoscaleHandlerUniqueIdentifier: `asg_handler_private`,
+  autoscaleRoute53ZoneArn: config.privateDNS.ZoneId,
+  vpcName: config.vpcName,
+  hostnameTagName: hostnamePatternPrivate
+})
+
+const asgDNSHandlerPublic = new AsgDnsHandler(this, "asg_dns_handler_public", <AsgDnsHandlerConfig>{
+  autoscaleHandlerUniqueIdentifier: `asg_handler_public`,
+  autoscaleRoute53ZoneArn: config.publicDNS.ZoneId,
+  vpcName: config.vpcName,
+  usePublicIp: true,
+  hostnameTagName: hostnamePatternPublic
+})
+
+new AutoscalingGroup(this, "aws_autoscaling_group", <AutoscalingGroupConfig>{
+  name: "asg",
+  vpcZoneIdentifier: [config.subnetId],
+  desiredCapacity: 1,
+  maxSize: 1,
+  minSize: 0,
+  launchTemplate: {
+    id: launchTemplate.id,
+    version: "$Default"
+  },
+  initialLifecycleHook: [
+    <AutoscalingGroupInitialLifecycleHook>{
+      name: "lifecycle-launching-private",
+      defaultResult: "ABANDON",
+      heartbeatTimeout: 60,
+      lifecycleTransition: "autoscaling:EC2_INSTANCE_LAUNCHING",
+      notificationTargetArn: asgDNSHandlerPrivate.autoscaleHandlingSnsTopicArnOutput,
+      roleArn: asgDNSHandlerPrivate.agentLifecycleIamRoleArnOutput
+    },
+    <AutoscalingGroupInitialLifecycleHook>{
+      name: "lifecycle-terminating-private",
+      defaultResult: "ABANDON",
+      heartbeatTimeout: 60,
+      lifecycleTransition: "autoscaling:EC2_INSTANCE_TERMINATING",
+      notificationTargetArn: asgDNSHandlerPrivate.autoscaleHandlingSnsTopicArnOutput,
+      roleArn: asgDNSHandlerPrivate.agentLifecycleIamRoleArnOutput
+    },
+    <AutoscalingGroupInitialLifecycleHook>{
+      name: "lifecycle-launching-public",
+      defaultResult: "ABANDON",
+      heartbeatTimeout: 60,
+      lifecycleTransition: "autoscaling:EC2_INSTANCE_LAUNCHING",
+      notificationTargetArn: asgDNSHandlerPublic.autoscaleHandlingSnsTopicArnOutput,
+      roleArn: asgDNSHandlerPublic.agentLifecycleIamRoleArnOutput
+    },
+    <AutoscalingGroupInitialLifecycleHook>{
+      name: "lifecycle-terminating-public",
+      defaultResult: "ABANDON",
+      heartbeatTimeout: 60,
+      lifecycleTransition: "autoscaling:EC2_INSTANCE_TERMINATING",
+      notificationTargetArn: asgDNSHandlerPublic.autoscaleHandlingSnsTopicArnOutput,
+      roleArn: asgDNSHandlerPublic.agentLifecycleIamRoleArnOutput
+    }
+  ],
+  tag: [
+    <AutoscalingGroupTag>{
+      key: hostnamePatternPrivate,
+      value: `${config.privateDNS.Prefix}.${config.privateDNS.ZoneName}@${config.privateDNS.ZoneId}`,
+      propagateAtLaunch: true
+    },
+    <AutoscalingGroupTag>{
+      key: hostnamePatternPublic,
+      value: `${config.publicDNS.Prefix}.${config.publicDNS.ZoneName}@${config.publicDNS.ZoneId}`,
+      propagateAtLaunch: true
+    }
+  ]
+})
+```
+
+
 ## Developers Guide / Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) to understand how to submit pull requests to us, and also see our [Code of Conduct](CODE_OF_CONDUCT.md).
