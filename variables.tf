@@ -18,4 +18,5 @@ variable "autoscale_route53zone_arn" {
 variable "hostname_tag_name" {
   description = "Name of tag with hostname pattern"
   default     = "asg:hostname_pattern"
+  type        = string
 }
