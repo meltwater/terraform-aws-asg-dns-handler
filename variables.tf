@@ -15,3 +15,7 @@ variable "autoscale_route53zone_arn" {
   description = "The ARN of route53 zone associated with autoscaling group"
 }
 
+variable "hostname_tag_name" {
+  description = "Name of tag with hostname pattern"
+  default     = "asg:hostname_pattern"
+}
