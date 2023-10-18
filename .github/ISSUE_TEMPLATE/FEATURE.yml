@@ -1,0 +1,36 @@
+---
+name: Feature Request
+description: Raise Idea / Feature to A-Team for review
+title: "[Feature] This could be cool"
+labels: enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Please search to see if an issue already exists for the feature you are requesting...
+  - type: textarea
+    id: request
+    attributes:
+      label: Feature Request
+      description: What would you like to see implemented in this project...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version(s) Affected
+      description: What version are you utilizing currently?
+      placeholder: ex. v1.0.0
+    validations:
+      required: false
+  - type: textarea
+    id: value
+    attributes:
+      label: Value Provided
+      description: What value would this feature if implemented provide you and others?
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        > **NOTICE**: This issue will automatically be associated with the [A-Team Debt, Bugs & OSS](https://github.com/orgs/meltwater/projects/64) for prioritization.
