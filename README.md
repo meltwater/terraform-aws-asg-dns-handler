@@ -39,7 +39,8 @@ module "clever_name_autoscale_dns" {
   source  = meltwater/asg-dns-handler/aws"
   version = "~> 2.0"
   
-  # use_public_ip = true
+  # use_public_ip      = true
+  # route53_record_ttl = 300
   autoscale_handler_unique_identifier = "clever_name"
   autoscale_route53zone_arn           = "ABCDEFGHIJ123"
   vpc_name                            = "my_vpc"
