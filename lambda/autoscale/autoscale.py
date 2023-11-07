@@ -20,7 +20,7 @@ ASG_KEY = "AutoScalingGroupName"
 def fetch_ip_from_ec2(instance_id):
     logger.info("Fetching IP for instance-id: %s", instance_id)
     ec2_response = ec2.describe_instances(InstanceIds=[instance_id])
-    if 'use_public_ip' in os.environ and os.environ['use_public_ip'] == "true":
+    if 'USE_PUBLIC_IP' in os.environ and os.environ['USE_PUBLIC_IP'] == "true":
         ip_address = ec2_response['Reservations'][0]['Instances'][0]['PublicIpAddress']
         logger.info("Found public IP for instance-id %s: %s", instance_id, ip_address)
     else:
@@ -93,7 +93,7 @@ def update_record(zone_id, ip, hostname, operation):
                     'ResourceRecordSet': {
                         'Name': hostname,
                         'Type': 'A',
-                        'TTL': 300,
+                        'TTL': os.environ['ROUTE53_TTL'],
                         'ResourceRecords': [{'Value': ip}]
                     }
                 }

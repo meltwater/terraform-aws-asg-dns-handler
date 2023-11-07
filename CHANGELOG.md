@@ -6,7 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+## [v2.1.8](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.7...v2.1.8) - 2023-11-07
+
 ### Added
+
+- Allow users to specify custom Route53 DNS Record TTL
 
 ## [v2.1.7](https://github.com/meltwater/terraform-aws-asg-dns-handler/compare/v2.1.6...v2.1.7) - 2022-03-22
 
