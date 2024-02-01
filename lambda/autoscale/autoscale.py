@@ -93,7 +93,7 @@ def update_record(zone_id, ip, hostname, operation):
                     'ResourceRecordSet': {
                         'Name': hostname,
                         'Type': 'A',
-                        'TTL': os.environ['ROUTE53_TTL'],
+                        'TTL': int(os.environ['ROUTE53_TTL']),
                         'ResourceRecords': [{'Value': ip}]
                     }
                 }
