@@ -1,0 +1,23 @@
+name: "Code Scanning"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+
+permissions:
+  actions: write
+  contents: read
+  security-events: write
+  packages: read
+  pull-requests: read
+
+jobs:
+  code-scan-analysis:
+    name: Code Scan Analysis
+    uses: meltwater/sec-global-gh-actions/.github/workflows/codeql-horusec-analysis.yml@main
