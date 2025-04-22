@@ -1,0 +1,28 @@
+name: "Code Scanning"
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'  # Runs at 12:00 AM UTC on the first day of every month
+
+permissions:
+  actions: write
+  contents: read
+  security-events: write
+  packages: read
+  pull-requests: read
+
+
+jobs:
+  code-scan-analysis:
+    name: Code Scan Analysis
+    secrets: inherit
+    uses: meltwater/sec-global-gh-actions/.github/workflows/codeql-horusec-analysis.yml@main
