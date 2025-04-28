@@ -98,6 +98,7 @@ data "aws_iam_policy_document" "lifecycle_policy" {
 }
 
 data "archive_file" "autoscale" {
+  count       = var.lambda_image_uri != null ? 0 : 1
   type        = "zip"
   source_file = "${path.module}/lambda/autoscale/autoscale.py"
   output_path = "${path.module}/lambda/dist/autoscale.zip"
@@ -106,12 +107,14 @@ data "archive_file" "autoscale" {
 resource "aws_lambda_function" "autoscale_handling" {
   depends_on = [aws_sns_topic.autoscale_handling]
 
-  filename         = data.archive_file.autoscale.output_path
+  filename         = var.lambda_image_uri != null ? null : data.archive_file.autoscale[0].output_path
   function_name    = "${var.vpc_name}-${var.autoscale_handler_unique_identifier}"
   role             = aws_iam_role.autoscale_handling.arn
-  handler          = "autoscale.lambda_handler"
-  runtime          = "python3.8"
-  source_code_hash = filebase64sha256(data.archive_file.autoscale.output_path)
+  handler          = var.lambda_image_uri != null ? null : "autoscale.lambda_handler"
+  runtime          = var.lambda_image_uri != null ? null : "python3.8"
+  source_code_hash = var.lambda_image_uri != null ? null : filebase64sha256(data.archive_file.autoscale[0].output_path)
+  image_uri        = var.lambda_image_uri != null ? var.lambda_image_uri : null
+  package_type     = var.lambda_image_uri != null ? "Image" : "Zip"
   description      = "Handles DNS for autoscaling groups by receiving autoscaling notifications and setting/deleting records from route53"
   environment {
     variables = {
