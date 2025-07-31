@@ -47,6 +47,17 @@ module "clever_name_autoscale_dns" {
 }
 ```
 
+By default, this module will also update the `Name` tag of your instance to match the short name of your pattern. If
+you want to opt-out of this behavior, you can add an additional tag to your auto scaling group:
+
+```hcl
+tag {
+  key                 = "asg:update_instance_name"
+  value               = "false"
+  propagate_at_launch = true
+}
+```
+
 ## How does it work?
 
 The module sets up these things:
@@ -112,6 +123,12 @@ resource "aws_autoscaling_group" "my_asg" {
     value               = "${var.hostname_prefix}-#instanceid.${var.vpc_name}.testing@${var.internal_zone_id}"
     propagate_at_launch = true
   }
+
+  # tag {
+  #   key                 = "asg:update_instance_name"
+  #   value               = "false"
+  #   propagate_at_launch = true
+  # }
 }
 
 module "autoscale_dns" {
