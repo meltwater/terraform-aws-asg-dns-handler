@@ -24,3 +24,9 @@ variable "route53_record_ttl" {
   default     = 300
   type        = number
 }
+
+variable "lambda_image_uri" {
+  default     = null
+  type        = string
+  description = "The URI of the Lambda image"
+}
