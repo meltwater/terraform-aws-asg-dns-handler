@@ -1,10 +1,11 @@
 ---
 # Automatically Generated File, DO NOT MODIFY (Maintained By Terraform)
-# Code: github.com/meltwater/foundation-github/blob/main/foundation/
+# Code: https://github.com/meltwater/github-site/tree/master/modules/feature_issues_project
 name: Technical Debt
 description: Report technical debt to A-Team
 title: "[Debt] Could Be Better"
 labels: tech-debt
+type: Task
 body:
   - type: markdown
     attributes:
