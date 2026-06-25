@@ -1,10 +1,10 @@
 ---
 # Automatically Generated File, DO NOT MODIFY (Maintained By Terraform)
-# Code: github.com/meltwater/foundation-github/blob/main/foundation/
+# Code: https://github.com/meltwater/github-site/tree/master/modules/feature_issues_project
 name: Bug Report
 description: Report a bug to A-Team
 title: "[Bug] Somethings Weird"
-labels: bug
+type: Bug
 body:
   - type: markdown
     attributes:
