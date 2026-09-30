@@ -12,6 +12,7 @@ ec2 = boto3.client('ec2')
 route53 = boto3.client('route53')
 
 HOSTNAME_TAG_NAME = "asg:hostname_pattern"
+UPDATE_INSTANCE_TAG_NAME = "asg:update_instance_name"
 
 LIFECYCLE_KEY = "LifecycleHookName"
 ASG_KEY = "AutoScalingGroupName"
@@ -45,21 +46,25 @@ def fetch_ip_from_route53(hostname, zone_id):
     return ip_address
 
 # Fetches relevant tags from ASG
-# Returns tuple of hostname_pattern, zone_id
+# Returns dict of tags
 def fetch_tag_metadata(asg_name):
     logger.info("Fetching tags for ASG: %s", asg_name)
 
-    tag_value = autoscaling.describe_tags(
+    tags = autoscaling.describe_tags(
         Filters=[
             {'Name': 'auto-scaling-group','Values': [asg_name]},
-            {'Name': 'key','Values': [HOSTNAME_TAG_NAME]}
+            {'Name': 'key','Values': [HOSTNAME_TAG_NAME, UPDATE_INSTANCE_TAG_NAME]}
         ],
         MaxRecords=1
     )['Tags'][0]['Value']
 
-    logger.info("Found tags for ASG %s: %s", asg_name, tag_value)
+    tag_values = {
+        tag['Key']: tag['Value'] for tag in tags
+    }
 
-    return tag_value.split("@")
+    logger.info("Found tags for ASG %s: %s", asg_name, tag_values)
+
+    return tag_values
 
 # Builds a hostname according to pattern
 def build_hostname(hostname_pattern, instance_id):
@@ -119,13 +124,16 @@ def process_message(message):
     asg_name = message['AutoScalingGroupName']
     instance_id =  message['EC2InstanceId']
 
-    hostname_pattern, zone_id = fetch_tag_metadata(asg_name)
+    asg_tag_metadata = fetch_tag_metadata(asg_name)
+
+    hostname_pattern, zone_id = asg_tag_metadata[HOSTNAME_TAG_NAME].split("@")
     hostname = build_hostname(hostname_pattern, instance_id)
 
     if operation == "UPSERT":
         ip = fetch_ip_from_ec2(instance_id)
 
-        update_name_tag(instance_id, hostname)
+        if asg_tag_metadata.get(UPDATE_INSTANCE_TAG_NAME, "true") == "true":
+            update_name_tag(instance_id, hostname)
     else:
         ip = fetch_ip_from_route53(hostname, zone_id)
 
