@@ -7,3 +7,14 @@ terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info
 lambda/dist/
+
+# Local Python development and test artifacts
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+.terraform.lock.hcl
