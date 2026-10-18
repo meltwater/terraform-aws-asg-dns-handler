@@ -28,14 +28,49 @@ the requirements below.
 
 - [x] Read the **CONTRIBUTING** document. (It's checked since you are already here.)
 - [ ] Read the [**CODE OF CONDUCT**](CODE_OF_CONDUCT.md) document.
-- [ ] Add tests to cover changes under terratest directory.
+- [ ] Add offline Lambda regression tests under `tests/` for handler changes.
 - [ ] Ensure your code follows the code style of this project.
 - [ ] Ensure CI and all other PR checks are green OR
     - [ ] Code compiles correctly.
     - [ ] Created tests which fail without the change (if possible).
     - [ ] All new and existing tests passed.
-- [ ] Add your changes to `Unreleased` section of [CHANGELOG](CHANGELOG.md).
 - [ ] Improve and update the [README](README.md) (if necessary).
+
+## Local validation
+
+Use Python 3.14, matching the Lambda runtime, and install the pinned development
+dependencies in a virtual environment:
+
+```sh
+python3.14 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+python -m ruff check .
+python -m ruff format --check .
+python -m pytest
+terraform fmt -check -recursive
+terraform init -backend=false -input=false
+terraform validate -no-color
+```
+
+Run `python -m ruff check --fix .` and `python -m ruff format .` to fix Python
+style issues; use `terraform fmt -recursive` to format Terraform files.
+
+The unit tests use botocore Stubber with dummy credentials, block socket
+connections, and require no AWS credentials or resources. They cover atomic
+A/TXT ownership writes, stale/retried DELETE events (including reused IPs),
+legacy records protected by live instances, exact record matching, pagination,
+and lifecycle completion/error handling. Pytest enforces at least 95% coverage
+with branch measurement enabled.
+
+The Validation GitHub Actions workflow runs these checks for pushes and pull
+requests. Terraform initialization downloads providers with backend access
+disabled; validation checks the root shared module without planning or applying.
+Recursive formatting also checks the examples.
+
+The legacy Go tests under `terratest/` **apply and destroy AWS infrastructure**.
+They are excluded from this workflow and the local checks above. Run them only
+as a separately authorized integration test in a suitable AWS environment.
 
 
 ## Release Process

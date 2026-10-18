@@ -60,11 +60,13 @@ The Lambda function then does the following:
 - Fetch the `asg:hostname_pattern` tag value from the ASG, and parse out the hostname and Route53 zone ID from it.
 - If it's an instance being **created**
 	- Fetch internal IP from EC2 API
-	- Create a Route53 record pointing the hostname to the IP
+	- Atomically upsert a Route53 A record and a dedicated `_asg-owner.<hostname>` TXT record containing the instance ID
 	- Set the Name tag of the instance to the initial part of the generated hostname
 - If it's an instance being **deleted**
-	- Fetch the internal IP from the existing record from the Route53 API
-	- Delete the record
+	- Read the exact A record and companion ownership TXT record
+	- Delete both records atomically only when the TXT owner matches the departing instance; a stale termination leaves a replacement instance's record intact
+	- For legacy records without ownership TXT, preserve the A record if another pending/running instance in the ASG holds its IP; otherwise delete the stale A record
+	- Treat an already missing A record as a successful no-op
 
 ## Setup
 
