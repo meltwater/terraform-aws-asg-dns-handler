@@ -8,6 +8,9 @@ on:
     types:
       - opened
 
+# The job authenticates with a GitHub App token, so GITHUB_TOKEN needs no scopes.
+permissions: {}
+
 jobs:
   add-to-project:
     name: Add issue to project
